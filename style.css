@@ -1,0 +1,433 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; }
+
+body { 
+    font-family: 'Kanit', sans-serif; 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow: hidden;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #a855f7; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+/* ========== Glass Panel ========== */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    position: relative;
+}
+.dark .glass-panel { background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); }
+
+/* ========== Animated Glowing Border ========== */
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+        from var(--border-angle, 0deg),
+        transparent 25%,
+        rgba(168, 85, 247, 0.5) 50%,
+        transparent 75%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotateBorder 6s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+.glass-panel:hover::before { opacity: 1; }
+
+@property --border-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+@keyframes rotateBorder {
+    to { --border-angle: 360deg; }
+}
+
+/* ========== Fade In ========== */
+.fade-in { animation: fadeIn 0.4s ease-in-out; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== Staggered Card Entrance (Optimized) ========== */
+.card-enter {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    animation: cardSlideUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    will-change: transform, opacity;
+}
+@keyframes cardSlideUp {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== 3D Tilt Card (Optimized) ========== */
+.tilt-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: transform;
+    transform: translateZ(0);
+}
+.tilt-card:hover {
+    z-index: 20;
+}
+
+/* ========== Ripple Effect (Optimized) ========== */
+.ripple-container { position: relative; overflow: hidden; }
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.3);
+    transform: scale(0);
+    animation: rippleAnim 0.5s ease-out;
+    pointer-events: none;
+    z-index: 50;
+    will-change: transform;
+}
+@keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
+}
+
+/* ========== LATEST Badge (Optimized) ========== */
+.badge-latest {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 30;
+    box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
+    animation: badgePulse 2.5s ease-in-out infinite;
+    will-change: box-shadow, transform;
+}
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4); transform: scale(1); }
+    50% { box-shadow: 0 3px 15px rgba(168, 85, 247, 0.6); transform: scale(1.05); }
+}
+
+/* ========== Header Shimmer (Optimized) ========== */
+.shimmer-text {
+    background-size: 200% auto;
+    animation: shimmer 3.5s ease-in-out infinite;
+}
+@keyframes shimmer {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
+/* ========== Floating Particles ========== */
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ========== Logo Bounce (Optimized) ========== */
+.logo-icon {
+    animation: logoBounce 2.5s ease-in-out infinite;
+}
+@keyframes logoBounce {
+    0%, 100% { transform: rotate(2deg) translateY(0); }
+    50% { transform: rotate(-2deg) translateY(-3px); }
+}
+
+/* ========== Nav Button Hover Glow (Optimized) ========== */
+.nav-btn {
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+    transition: opacity 0.25s;
+}
+.nav-btn:hover::after { opacity: 1; }
+
+/* ========== Download Icon Bounce on Card Hover (Optimized) ========== */
+.download-icon {
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tilt-card:hover .download-icon {
+    animation: downloadBounce 0.5s ease-in-out;
+}
+@keyframes downloadBounce {
+    0%, 100% { transform: scale(1.1) translateY(0); }
+    25% { transform: scale(1.1) translateY(2px); }
+    50% { transform: scale(1.1) translateY(-1.5px); }
+    75% { transform: scale(1.1) translateY(0.5px); }
+}
+
+/* ========== Version Counter ========== */
+.version-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #a855f7;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    margin-left: 8px;
+    animation: fadeIn 0.5s ease-out 0.3s both;
+}
+
+/* ========== Smooth Tab Switch (Optimized) ========== */
+.tab-content {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.tab-content.hidden {
+    opacity: 0;
+    transform: translateY(5px);
+    pointer-events: none;
+    position: absolute;
+}
+.tab-content:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========== Snake ========== */
+#snake {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+.snake-segment {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+    transition: box-shadow 0.3s;
+}
+.dark .snake-segment {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
+}
+.head {
+    width: 60px;
+    height: 40px;
+    border-radius: 50% 50% 40% 40%;
+    z-index: 10;
+}
+.eye {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    top: 10px;
+    z-index: 11;
+}
+.eye.left { left: 12px; }
+.eye.right { right: 12px; }
+.pupil {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #1e1b4b;
+    border-radius: 50%;
+    top: 2.5px;
+    left: 2.5px;
+}
+
+/* ========== Theme Toggle (Optimized) ========== */
+#theme-toggle {
+    cursor: pointer;
+    outline: none;
+}
+#theme-toggle:hover {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+}
+.dark #theme-toggle:hover {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+@keyframes themeSwitch {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(0.9) rotate(180deg); }
+    100% { transform: scale(1) rotate(360deg); }
+}
+#theme-toggle.switching {
+    animation: themeSwitch 0.45s ease-in-out;
+}
+
+/* ========== GitHub Button Shine ========== */
+.github-btn {
+    position: relative;
+    overflow: hidden;
+}
+.github-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: none;
+    animation: githubShine 4s ease-in-out infinite;
+}
+@keyframes githubShine {
+    0%, 100% { left: -100%; }
+    50% { left: 100%; }
+}
+
+/* ========== Tooltip ========== */
+.card-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: rgba(15, 23, 42, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 100;
+    backdrop-filter: blur(8px);
+}
+.card-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(15, 23, 42, 0.9);
+}
+.tilt-card:hover .card-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* ========== Smooth Animations ========== */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.3), inset 0 0 10px rgba(168, 85, 247, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.15); }
+}
+@keyframes pulse-scale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+@keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes bounce-in {
+    0% { opacity: 0; transform: scale(0.3) translateY(20px); }
+    50% { opacity: 1; }
+    100% { transform: scale(1) translateY(0); }
+}
+@keyframes rotate-360 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ========== Toast Notification - Optimized ========== */
+.toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+    z-index: 1000;
+    animation: slideInToast 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), slideOutToast 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 2.15s forwards;
+    backdrop-filter: blur(10px);
+    will-change: transform, opacity;
+}
+@keyframes slideInToast {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutToast {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100%); }
+}
+
+/* ========== Search Bar (Optimized) ========== */
+.search-container {
+    position: relative;
+    animation: slide-in-left 0.5s ease-out;
+}
+.search-input {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.88) !important;
+    border: 2px solid rgba(168, 85, 247, 0.2) !important;
+    will-change: border-color, box-shadow;
+}
+.search-input:focus {
+    border-color: #a855f7 !important;
+    background: white !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
+    outline: none !important;
+}
+.search-input::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+}
+.dark .search-input {
+    background: rgba(30, 27, 75, 0.88) !important;
+    border-color: rgba(168, 85, 247, 0.1) !important;
+    color: white;
+}
+.dark .search-input:focus {
+    background: rgba(30, 27, 75, 1) !important;
+    border-color: #a855f7 !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+.dark .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
